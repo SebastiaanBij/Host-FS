@@ -1,0 +1,44 @@
+{
+  "Description": "A Host Filesystem Volume Driver for Docker",
+  "Documentation": "https://github.com/bbyte/docker-host-fs",
+  "Entrypoint": ["/usr/local/bin/host-fs"],
+  "Interface": {
+    "Socket": "host-fs.sock",
+    "Types": ["docker.volumedriver/1.0"]
+  },
+  "Linux": {
+    "Capabilities": ["CAP_SYS_ADMIN"]
+  },
+  "Env": [
+    {
+      "Name": "LOG_LEVEL",
+      "Description": "Log level for the driver (defaults to 'info')",
+      "Value": "info"
+    },
+    {
+      "Name": "HOST_DIR",
+      "Description": "Host filesystem mount inside the driver filesystem (defaults to '/var/lib/host-fs/host')",
+      "Value": "/var/lib/host-fs/host"
+    },
+    {
+      "Name": "MOUNT_DIR",
+      "Description": "Docker propagation filesystem mount inside the driver filesystem (defaults to '/var/lib/host-fs/mount')",
+      "Value": "/var/lib/host-fs/mount"
+    },
+    {
+      "Name": "STATE_DIR",
+      "Description": "State filesystem mount inside the driver filesystem (defaults to '/var/lib/host-fs')",
+      "Value": "/var/lib/host-fs"
+    }
+  ],
+  "Mounts": [
+    {
+      "Name": "host",
+      "Type": "bind",
+      "Options": ["shared", "rbind"],
+      "Source": "/",
+      "Destination": "/var/lib/host-fs/host"
+    }
+  ],
+  "PropagatedMount": "/var/lib/host-fs/mount"
+}
